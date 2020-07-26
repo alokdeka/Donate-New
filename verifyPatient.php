@@ -19,7 +19,8 @@ elseif (is_numeric(htmlspecialchars($_GET['id']))) {
 		 </script>");
 	}
 	$row = mysqli_fetch_assoc($result);
-	$_SESSION["otp"] = "12345";
+	$otp = rand(100000, 999999);
+	$_SESSION["otp"] = $otp;
 	$phone = $row['phone'];
 
 ?>
@@ -146,7 +147,8 @@ elseif (is_numeric(htmlspecialchars($_GET['id']))) {
 		<!-- Main -->
 		<section id="main" class="container medium">
 			<header>
-				<p id="data2">Please enter the OTP sent to your mobile number: </p>
+				<p id="data2">Please enter the OTP sent to your mobile number: </p><br>
+				<p>Yoy OTP: <?php echo $_SESSION["otp"];?></p>
 			</header>
 			<div class="box">
 				<div id="verificationEnter">
@@ -216,6 +218,8 @@ elseif (is_numeric(htmlspecialchars($_GET['id']))) {
 				else{
 					if(value == otp){
 						alert('Verified');
+						<?php unset($_SESSION['otp']); ?>;
+						window.location.href='index.php';
 					}
 					else{
 						alert('Wrong OTP');

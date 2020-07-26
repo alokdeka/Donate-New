@@ -153,19 +153,19 @@
 
 				<!-- <form action="verify.html"> -->
 				<form id="registrationForm" method="POST" action="_actions/registerDonor.php">
-				<!-- <form id="registrationForm" method="POST" action="_actions/test.php"> -->
+					<!-- <form id="registrationForm" method="POST" action="_actions/test.php"> -->
 					<div class="row gtr-50 gtr-uniform">
 						<div class="col-12">
-							<input type="text" name="name" id="name" value="" placeholder="Name" required/>
+							<input type="text" name="name" id="name" value="" placeholder="Name" required />
 						</div>
 						<div class="col-12">
-							<input type="text" name="phone" id="phone" value="" placeholder="Phone" required/>
+							<input type="text" name="phone" id="phone" value="" placeholder="Phone" required />
 						</div>
 						<div class="col-12">
-							<input type="email" name="email" id="email" value="" placeholder="Email" required/>
+							<input type="email" name="email" id="email" value="" placeholder="Email" required />
 						</div>
 						<div class="col-12">
-							<input type="text" name="age" id="age" value="" placeholder="Age" required/>
+							<input type="text" name="age" id="age" value="" placeholder="Age" required />
 						</div>
 						<div class="col-12">
 							<select name="blood" id="blood">
@@ -181,14 +181,15 @@
 								placeholder="Address" />
 						</div> -->
 						<div class="col-12">
-							<input type="text" name="lat" id="lat" value=""  required />
+							<input type="hidden" name="lat" id="lat" value="" />
 						</div>
 						<div class="col-12">
-							<input type="text" name="long" id="long" value=""  required />
+							<input type="hidden" name="long" id="long" value="" />
 						</div>
 						<div class="col-12-narrower">
 							<input type="checkbox" id="agree" name="agree" checked>
-							<label for="agree">I agree to the <a href="terms.php">terms of service</a> of the
+							<label for="agree">I agree to the <a href="terms.php" target="_blank">terms of service</a>
+								of the
 								website</label>
 						</div>
 						<div class="col-12">
@@ -257,7 +258,31 @@
 				$('#registrationForm').show();
 			});
 			$('#no').click(function () {
-				window.location.replace("index.html");
+				window.location.replace("index.php");
+			});
+
+			$('form').submit(function () {
+
+				// Get the Login Name value and trim it
+				var lat = $.trim($('#lat').val());
+				var long = $.trim($('#long').val());
+
+				// Check if empty of not
+				if (lat === '' && long === '') {
+					alert('Please allow location and try again.');
+					window.location.replace("donor.php");
+					return false;
+
+
+					// var r = confirm('Allow Location?');
+					// if (r == true) {
+					// 	getLocation();
+					// } else {
+					// 	return false;
+					// }
+					// return false;
+
+				}
 			});
 		});
 
@@ -275,17 +300,54 @@
 		var lat = document.getElementById("lat");
 		var long = document.getElementById("long");
 
+		function allow() {
+			var r = confirm('Yoy must allow location to register');
+			if (r == true) {
+				getLocation();
+			} else {
+				window.location.replace("index.php");
+			}
+		}
+
 		function getLocation() {
 			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(showPosition);
+				navigator.geolocation.getCurrentPosition(showPosition, showError);
+				// navigator.geolocation.getCurrentPosition(showPosition);
 			} else {
-				x.innerHTML = "Geolocation is not supported by this browser.";
+				// x.innerHTML = "Geolocation is not supported by this browser.";
+				alert("Geolocation is not supported by this browser.");
+				window.location.replace("index.php");
 			}
 		}
 
 		function showPosition(position) {
 			document.getElementById('lat').value = position.coords.latitude;
 			document.getElementById('long').value = position.coords.longitude;
+		}
+
+		function showError(error) {
+			switch (error.code) {
+				case error.PERMISSION_DENIED:
+					// x.innerHTML = "User denied the request for Geolocation."
+					alert("You denied the request for Geolocation. \nAllow location and try again");
+					window.location.replace("index.php");
+					break;
+				case error.POSITION_UNAVAILABLE:
+					// x.innerHTML = "Location information is unavailable."
+					alert("Location information is unavailable.");
+					window.location.replace("index.php");
+					break;
+				case error.TIMEOUT:
+					// x.innerHTML = "The request to get user location timed out."
+					alert("The request to get user location timed out.");
+					window.location.replace("index.php");
+					break;
+				case error.UNKNOWN_ERROR:
+					// x.innerHTML = "An unknown error occurred."
+					alert("An unknown error occurred.");
+					window.location.replace("index.php");
+					break;
+			}
 		}
 	</script>
 
