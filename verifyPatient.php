@@ -151,21 +151,21 @@ elseif (is_numeric(htmlspecialchars($_GET['id']))) {
 				<p>Yoy OTP: <?php echo $_SESSION["otp"];?></p>
 			</header>
 			<div class="box">
-				<div id="verificationEnter">
+				<form  name="myForm" id="verificationEnter" action="_actions/verifyPatient.php" onsubmit="return validateForm()" method="POST">
 					<div class="gtr-uniform">
 						<div class="col-12" style="margin-bottom: 10px;">
-							<input type="text" name="phone" id="phone" value="<?php echo $phone;?>" disabled />
+							<input type="text" name="phone" id="phone" value="<?php echo $phone;?>"  />
 						</div>
 						<div class="col-12" style="margin-bottom: 10px;">
 							<input type="text" name="verification" id="verification" value="" placeholder="OTP" />
 						</div>
 						<div class="col-12">
 							<ul class="actions special">
-								<li><input id="verficationBtn" type="submit" value="Verify" /></li>
+								<li><input id="verficationBtn" type="submit" name="submit" value="Verify" /></li>
 							</ul>
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</section>
 
@@ -208,26 +208,24 @@ elseif (is_numeric(htmlspecialchars($_GET['id']))) {
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	<script>
-		$(document).ready(function () {
-			var value = <?php echo $_SESSION['otp'] ?>;
-			$('#verficationBtn').click(function(){
-				var otp = $("#verification").val();
-				if(otp.length == 0){
-					alert('Please enter OTP')
-				} 
-				else{
-					if(value == otp){
-						alert('Verified');
-						<?php unset($_SESSION['otp']); ?>;
-						window.location.href='index.php';
-					}
-					else{
+			function validateForm() {
+				var value = <?php echo $_SESSION['otp'] ?> ;
+				var x = document.forms["myForm"]["verification"].value;
+				if (x == "") {
+					// alert(value);
+					alert("Please enter OTP");
+					return false;
+				}else {
+					if (value == x) {
+						// alert('Verified'); 
+						<?php unset($_SESSION['otp']);?> ;
+						return true;
+					} else {
 						alert('Wrong OTP');
+						return false;
 					}
 				}
-
-			});
-		});
+			}
 	</script>
 </body>
 

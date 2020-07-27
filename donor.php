@@ -152,7 +152,7 @@
 				</div>
 
 				<!-- <form action="verify.html"> -->
-				<form id="registrationForm" method="POST" action="_actions/registerDonor.php">
+				<form name="myForm" id="registrationForm" method="POST" action="_actions/registerDonor.php" onsubmit="return validateForm()">
 					<!-- <form id="registrationForm" method="POST" action="_actions/test.php"> -->
 					<div class="row gtr-50 gtr-uniform">
 						<div class="col-12">
@@ -272,16 +272,6 @@
 					alert('Please allow location and try again.');
 					window.location.replace("donor.php");
 					return false;
-
-
-					// var r = confirm('Allow Location?');
-					// if (r == true) {
-					// 	getLocation();
-					// } else {
-					// 	return false;
-					// }
-					// return false;
-
 				}
 			});
 		});
@@ -308,6 +298,15 @@
 				window.location.replace("index.php");
 			}
 		}
+
+		function validateForm() {
+				var x = document.forms["myForm"]["phone"].value;
+				if (x.length != 10) {
+					// alert(value);
+					alert("Please enter your 10 digit mobile number");
+					return false;
+				}
+			}
 
 		function getLocation() {
 			if (navigator.geolocation) {

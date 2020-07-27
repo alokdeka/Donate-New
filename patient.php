@@ -136,7 +136,8 @@
 				<p id="data1">Fill out the form below so that we find a plasma donor for you!</p>
 			</header>
 			<div class="box">
-				<form id="registrationForm" action="_actions/registerPatient.php" method="POST">
+				<form name="myForm" id="registrationForm" action="_actions/registerPatient.php" method="POST"
+					onsubmit="return validateForm()">
 					<!-- <form id="registrationForm" action="_actions/test.php" method="POST"> -->
 					<div class="row gtr-50 gtr-uniform">
 
@@ -246,6 +247,7 @@
 				}
 			});
 
+
 			$('form').submit(function () {
 
 				// Get the Login Name value and trim it
@@ -256,21 +258,20 @@
 				if (lat === '' && long === '') {
 					alert('Please allow location and try again.');
 					return false;
-
-
-					// var r = confirm('Allow Location?');
-					// if (r == true) {
-					// 	getLocation();
-					// } else {
-					// 	return false;
-					// }
-					// return false;
-
 				}
 			});
 		});
 	</script>
-
+	<script>
+		function validateForm() {
+			var x = document.forms["myForm"]["phone"].value;
+			if (x.length != 10) {
+				// alert(value);
+				alert("Please enter your 10 digit mobile number");
+				return false;
+			}
+		}
+	</script>
 
 	<script>
 		var x = document.getElementById("demo");
